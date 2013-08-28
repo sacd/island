@@ -6,15 +6,16 @@ public class AIZombie : MonoBehaviour
 {
 	public NavMeshAgent agent;
 	public Transform target;
-	float startAgentSpeed;
+	public  float startAgentSpeed;
 	public string AnimationEnemyAttackName;
-	public int damage;
+	public float damage;
 	
 	void AttackZombie ()
 	{
 		animation.Play (AnimationEnemyAttackName);
+		
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
-		if (Vector3.Distance (transform.position, player.transform.position) <= 2) {
+		if (Vector3.Distance (transform.position, player.transform.position) <= 3) {
 			player.SendMessageUpwards ("ApplyDamage", damage);
 		}
 	}
@@ -23,21 +24,19 @@ public class AIZombie : MonoBehaviour
 	{
 		startAgentSpeed = agent.speed;
 		agent = GetComponent<NavMeshAgent> ();
-
 	}
 	
-	// Update is called once per frame
 	void Update ()
 	{
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");	
 		agent.SetDestination (target.position);
 	
-	//	if (Vector3.Distance (transform.position, player.transform.position) <= 10) {
-	//		target = player.transform;			 	
-	//	}
-		if (Vector3.Distance (transform.position, player.transform.position) <= 1) {
-			if (!animation.IsPlaying(AnimationEnemyAttackName)) {
-				AttackZombie();
+		if (Vector3.Distance (transform.position, player.transform.position) <= 10) {
+			target = player.transform;			 	
+		}
+		if (Vector3.Distance (transform.position, player.transform.position) <= 2) {
+			if (!animation.IsPlaying (AnimationEnemyAttackName)) {
+				AttackZombie ();
 			}
 			agent.speed = 0;			 	
 		} else {
